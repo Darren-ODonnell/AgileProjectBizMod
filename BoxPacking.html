@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script
+  src="https://code.jquery.com/jquery-3.6.0.js"
+  integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+  crossorigin="anonymous">
+</script>
+  <style> 
+  td{
+    text-align:center; 
+  }
+  th {text-align: center}
+
+  label{width: 150px; text-align: center;}
+  input{width: 150px; }
+
+  </style>
+  
+</head>
+<body>
+  <!-- Handling User Input -->
+  <form  action="javascript:void(0);" method="POST" onsubmit="submitValues()"> <!-- javascript:void(0) is used to stop the page from refreshing-->
+    <!-- Customer Number, name, address, telephone, gender and industry-->
+    <div id="inputForm"><br/>
+      <h1> Box Packing </h1>
+      <h2>Item </h2>
+      <label>Height</label><label>Width</label><label>Length</label><label>Weight</label><label>Quantity</label><br/>
+      <input class = "t1" type="number" step= "any" id="itemHeight" placeholder="Item Height" value= "10">
+      <input class = "t1" type="number" step= "any" id="itemWidth" placeholder="Item Width" value= "10">
+      <input class = "t1" type="number" step= "any" id="itemLength" placeholder="Item Length" value= "10">
+      <input class = "t1" type="number" step= "any" id="itemWeight" placeholder="Item Weight" value= "10">
+      <input class = "t1" type="number" step= "any" id="itemQty" placeholder="Item Qty" value= "15">
+<br/><br/>
+      <h2>Box </h2>
+      <label>Height</label><label>Width</label><label>Length</label><label>WeightCapacity</label><br/>
+      <input class = "t1" type="number" step= "any" id="boxHeight" placeholder="Box Height"value= "20">
+      <input class = "t1" type="number" step= "any" id="boxWidth" placeholder="Box Width" value= "20">
+      <input class = "t1" type="number" step= "any" id="boxLength" placeholder="Box Length" value= "20">
+      <input class = "t1" type="number" step= "any" id="boxWeight" placeholder="Box Weight" value= "30">
+      
+      <input class="btn btn-success" type="submit" value="Submit"><br/><br/>
+    </div>
+  </form>
+
+<div id= changeTable></div>
+
+<button onclick= "clearInput()">
+  Click here to clear input
+</button>
+<script>
+    function clearInput(){
+      $(document).ready(function(){
+        $('.t1').val('');
+      });
+      clearDiv();
+
+    }
+
+    function render(itemCount, boxCount){      
+ 
+      let tableStr = buildTable(itemCount, boxCount);
+
+      setTableContent(tableStr);
+    }
+
+    function buildTable(itemCount, boxCount){
+      let tableStr = buildHeader("Item Count", "Box Count");
+      tableStr += populateTable(itemCount, boxCount);
+      tableStr += buildFooter();
+
+      return tableStr;
+    }
+
+    function populateTable(itemCount, boxCount){
+      return "<tr><td>" + itemCount + "</td><td>" + boxCount + "</td></tr>";
+    }
+
+    function buildHeader(head1, head2){
+      return "<table class = " + "table table-striped>"  + 
+                "<tr > " +
+                  "<th >" + head1 + "</th><th >" + head2 + "</th>" +
+                "</tr> ";
+    }
+
+    function buildFooter(){
+      return "</table>";
+    }
+
+    function setTableContent(tableStr){
+      $('#changeTable').html(tableStr);
+    }
+
+    function getItemsPerBox(item, box){
+      let itemsPerBox = 0;
+      while(item[0] <= box[0] && item[1] <= box[1] && item[2] <= box[2]){// If still space in box for item and boxCapacity has not been exceeded
+        
+        let itemsPerDimension = [];
+        for(let i = 0; i< 3; i++){
+          itemsPerDimension[i] = parseInt((box[i] / item[i]));
+
+          // Set inital value of itemsPerBox
+          if(itemsPerBox == 0){
+            itemsPerBox = itemsPerDimension[i];
+          }else{ // multiplies base by the other 2 dimensions
+            itemsPerBox *= itemsPerDimension[i];
+          }
+
+        }
+
+        //update box dimensions
+        for(let i = 0; i< 3; i++){
+          //Subtract the dimensions required by those boxes
+          box[i] -= item[i] * itemsPerDimension[i];
+        }
+
+        //Sort box and item so that item is oriented most effectively 
+        box.sort();
+        item.sort();
+
+      }
+      return itemsPerBox;
+    }
+
+    function calculateBoxes(itemCount, item, itemWeight, box, boxWeight){
+      //Sort box and item so that item is oriented most effectively 
+      item.sort();
+      box.sort();
+
+      // qty of items left to sort
+      let remainingItems = itemCount;
+        
+      let itemsPerBox = getItemsPerBox(item, box);
+
+      console.log(itemsPerBox);
+      // Extract the items until weight is less that boxCapacity
+      while(itemsPerBox * itemWeight > boxWeight){
+        itemsPerBox --;
+      }
+
+      console.log(itemsPerBox);
+
+
+      // Total Items / countPerBox; = boxes needed
+      let boxesNeeded = parseInt(itemCount / itemsPerBox);
+
+      // check leftover items 
+      if(itemCount % itemsPerBox > 0){
+        boxesNeeded ++;
+      }
+
+      return boxesNeeded;
+    }
+
+
+    function submitValues(){
+    let itemHeight = parseInt($('#itemHeight').val());
+    let itemLength = parseInt($('#itemLength').val());
+    let itemWeight = parseInt($('#itemWeight').val());
+    let itemWidth = parseInt($('#itemWidth').val());
+    let itemCount = parseInt($('#itemQty').val());
+
+    
+
+    let boxHeight = parseInt($('#boxHeight').val());
+    let boxLength = parseInt($('#boxLength').val());
+    let boxWeight = parseInt($('#boxWeight').val());
+    let boxWidth = parseInt($('#boxWidth').val());
+
+    const itemDims = [itemLength, itemWidth, itemHeight];
+    const boxDims = [boxLength, boxWidth, boxHeight];
+
+    let boxCount = calculateBoxes(itemCount, itemDims, itemWeight, boxDims, boxWeight);
+
+    render(itemCount, boxCount);
+   
+  }
+
+  function clearDiv(){
+    $('#changeTable').empty();
+  }
+</script>
+</body>
+</html>

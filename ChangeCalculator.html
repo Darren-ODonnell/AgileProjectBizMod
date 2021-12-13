@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+  <script
+  src="https://code.jquery.com/jquery-3.6.0.js"
+  integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+  crossorigin="anonymous">
+</script>
+  <style> 
+  td{
+    text-align:center; 
+  }
+  th {text-align: center}
+  </style>
+  
+</head>
+<body>
+  <!-- Handling User Input -->
+  <form  action="javascript:void(0);" method="POST" onsubmit="submitValues()"> <!-- javascript:void(0) is used to stop the page from refreshing-->
+    <!-- Customer Number, name, address, telephone, gender and industry-->
+    <h1>Change Calculator</h1>
+    <div id="inputForm"><br/>
+      <input class = "t1" type="number" step= "any" id="cartTotal" placeholder="Cart Total">
+      <input class = "t1" type="number" step= "any" id="customerAmount" placeholder="Customer Amount">
+      <input class="btn btn-success" type="submit" value="Submit"><br/><br/>
+    </div>
+  </form>
+
+<div id= changeTable></div>
+
+<button onclick= "clearInput()">
+  Click here to clear input
+</button>
+<script>
+    function clearInput(){
+      $(document).ready(function(){
+        $('.t1').val('');
+      });
+      clearDiv();
+
+    }
+    // 100,50,20,10,5 notes and 50,20,10,5,1 cents
+    const DENOMINATIONS = [100,50,20,10,5,2,1,.5,.2,.1,.05,.02,.01];
+
+    function render(change){      
+ 
+      let tableStr = buildTable(change);
+
+      setTableContent(tableStr);
+    }
+
+    function buildTable(change){
+      let tableStr = buildHeader("Quantity", "Denominations");
+      tableStr += populateTable(change);
+      tableStr += buildFooter();
+
+      return tableStr;
+    }
+
+    function populateTable(change){
+      let i = 0;
+      let changeStr ='';
+
+      for(let i = 0; i < change.length; i++){
+
+        // show Euro or cent as appropriate
+        let prettyStr = (DENOMINATIONS[i] < 1) ? DENOMINATIONS[i]*100 + "c" : "€"+ DENOMINATIONS[i];
+
+        // only display change if demonination is used ie change[i] > 0
+        if (change[i] > 0) {
+          changeStr += "<tr ><td >" + change[i] + "</td><td>" + prettyStr + "</td></tr>";
+        }
+      }
+      return changeStr;
+    }
+
+    function buildHeader(head1, head2){
+      return "<table class = " + "table table-striped>"  + 
+                "<tr > " +
+                  "<th >" + head1 + "</th><th >" + head2 + "</th>" +
+                "</tr> ";
+    }
+
+    function buildFooter(){
+      return "</table>";
+    }
+
+    function getQty(changeDue, denomination){
+      changeDue = Math.round(changeDue * 100) / 100; // Round to 2 decimal places
+      let divisions = 0;
+      if(changeDue >= denomination){
+        divisions = parseInt(changeDue / denomination);
+      }
+      return divisions;
+    }
+
+    function setTableContent(tableStr){
+      $('#changeTable').html(tableStr);
+    }
+
+
+    function submitValues(){
+    let cartTotal = parseFloat($('#cartTotal').val(), 10);
+    let customerAmount = parseFloat($('#customerAmount').val(), 10);
+
+    if(cartTotal > customerAmount)
+      setTableContent("Customer does not have enough for this transaction");
+    else
+      calculateChange(customerAmount, cartTotal);
+   
+  }
+
+  function calculateChange(customerAmount, cartTotal){
+    let changeDue = customerAmount - cartTotal;
+
+    let change = [];
+
+    for(let i = 0; i < DENOMINATIONS.length; i++){
+      change[i] = getQty(changeDue, DENOMINATIONS[i]);
+      changeDue -= DENOMINATIONS[i] * change[i];
+    }
+
+    render(change);
+  }
+
+  function clearDiv(){
+    $('#changeTable').empty();
+  }
+</script>
+</body>
+</html>
