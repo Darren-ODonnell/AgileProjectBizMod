@@ -1,0 +1,159 @@
+<html>
+
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+body {
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+.navbar {
+  overflow: hidden;
+  background-color: #333;
+}
+
+.navbar a {
+  float: left;
+  font-size: 16px;
+  color: white;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+}
+
+.dropdown {
+  float: left;
+  overflow: hidden;
+}
+
+.dropdown .dropbtn {
+  font-size: 16px;  
+  border: none;
+  outline: none;
+  color: white;
+  padding: 14px 16px;
+  background-color: inherit;
+  font-family: inherit;
+  margin: 0;
+}
+
+.navbar a:hover, .dropdown:hover .dropbtn {
+  background-color: red;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+  z-index: 1;
+}
+
+.dropdown-content a {
+  float: none;
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+  text-align: left;
+}
+
+.dropdown-content a:hover {
+  background-color: #ddd;
+}
+
+.dropdown:hover .dropdown-content {
+  display: block;
+}
+
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <a href="DropdownMenu.html">Home</a>
+  <a href="#news">About Us</a>
+  <div class="dropdown">
+    <button class="dropbtn">Product Range 
+      <i class="fa fa-caret-down"></i>
+    </button>
+    <div class="dropdown-content">
+      <a href="Lux.html">Luxary Products</a>
+      <a href="#EssPage">Essentials</a>
+      <a href="gift.html">Gift</a>
+    </div>
+  </div> 
+</div>
+
+<div class="card">
+  <img src="gift1.jpg" alt="Insence Vapourizer" style="width:100%">
+  <h1>Insence Vapourizer</h1>
+  <p class="price">$50.00</p>
+  <p class="VAT">VAT $10.00</p>
+  <p>Fill your room with your favourite smells with this great vapourizer</p>
+  <p><button>Add to Cart</button></p>
+</div>
+
+
+<div class="card">
+  <img src="gift2.jpg" alt="Custom Snow Globe" style="width:100%">
+  <h1>Custom Snow Globe</h1>
+  <p class="price">$50.00</p>
+  <p class="VAT">VAT $10.00</p>
+  <p>Create your own personal Snow Globe for you and your partner. You can use any photo you like</p>
+  <p><button>Add to Cart</button></p>
+</div>
+
+
+<div class="card">
+  <img src="gift3.jpg" alt="Mystery Box" style="width:100%">
+  <h1>Mystery Box</h1>
+  <p class="price">$50.00</p>
+  <p class="VAT">VAT $10.00</p>
+  <p>Surprise yourself and your partner with this mysery box filled with small bits and bobs. Great value for its price and a nice surprise for both of you   </p>
+  <p><button>Add to Cart</button></p>
+</div>
+
+<div class="card">
+  <img src="gift4.jpg" alt="Matching bracelets" style="width:100%">
+  <h1>Matching bracelets</h1>
+  <p class="price">$50.00</p>
+  <p class="VAT">VAT $10.00</p>
+  <p>His and Hers matching barcelets </p>
+  <p><button>Add to Cart</button></p>
+</div>
+<style>
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  max-width: 300px;
+  margin: auto;
+  text-align: center;
+  font-family: arial;
+}
+
+.price {
+  color: grey;
+  font-size: 22px;
+}
+
+.card button {
+  border: none;
+  outline: 0;
+  padding: 12px;
+  color: white;
+  background-color: #000;
+  text-align: center;
+  cursor: pointer;
+  width: 100%;
+  font-size: 18px;
+}
+
+.card button:hover {
+  opacity: 0.7;
+}
+</style>
+</body>
+
+</html>
